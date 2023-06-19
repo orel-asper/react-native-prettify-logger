@@ -8,8 +8,6 @@ Here is a sample README.md for your library:
 
 This library provides a global logger for React Native applications. The logger enhances console output with colors and emojis, significantly improving readability and making debugging easier. It supports various types including primitive types, objects, promises, and errors.
 
-![Alt Text](./example.png)
-
 
 ## ⚙️ Installation
 
@@ -63,6 +61,8 @@ const dummyData = {
 
 global.logger(dummyData);
 ```
+
+![Alt Text](./example.png)
 
 ### Features
 

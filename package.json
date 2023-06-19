@@ -1,0 +1,31 @@
+{
+  "name": "react-native-prettify-logger",
+  "version": "1.0.0",
+  "description": "A simple logger for React Native.",
+  "main": "index.js",
+  "types": "index.d.ts",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/orel-asper/react-native-prettify-logger.git"
+  },
+  "keywords": [
+    "react-native",
+    "logger",
+    "prettify",
+    "pretty",
+    "log",
+    "console",
+    "react",
+    "native",
+    "react-native-logger",
+    "react-native-prettify-logger"
+  ],
+  "bugs": {
+    "url": "https://github.com/orel-asper/react-native-prettify-logger/issues"
+  },
+  "author": "Orel Asper",
+  "license": "MIT"
+}

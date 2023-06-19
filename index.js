@@ -110,3 +110,6 @@ global.logger = (...args) => {
     }
   });
 };
+
+
+export default global.logger;

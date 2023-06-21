@@ -27,4 +27,4 @@ const dummyData = {
   null: null,
 };
 
-global.logger(dummyData);
+global.logger(dummyData)

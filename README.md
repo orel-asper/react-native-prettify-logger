@@ -1,4 +1,3 @@
-Here is a sample README.md for your library:
 
 ---
 

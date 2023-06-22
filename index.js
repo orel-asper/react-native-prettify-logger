@@ -3,19 +3,29 @@ import { printWithColor, printPromise, printObject } from "./printUtils";
 import fetchWithLogging from "./fetchUtils";
 import logLocalStorage from "./localStorageUtils";
 import axiosInstance from "./axiosUtils";
-import { getType } from "./typeUtils";
 
 let isLoggingEnabled = false;
 let requestFilter = null;
 
 const logger = (...args) => {
   args.forEach(arg => {
-    switch (getType(arg)) {
-      case 'undefined': printWithColor('undefined', colors.get('FgRed')); break;
-      case 'error': printWithColor(`Error: ${arg.message}`, colors.get('FgRed')); break;
-      case 'promise': printPromise(arg); break;
-      case 'object': printObject(arg); break;
-      default: printWithColor(arg, colors.get('FgGreen'));
+    const type = typeof arg;
+    if (type === "undefined") {
+      printWithColor("undefined", colors.FgRed);
+    } else if (arg instanceof Error) {
+      printWithColor(`Error: ${arg.message}`, colors.FgRed);
+    } else if (arg instanceof Promise) {
+      arg
+        .then((result) => {
+          printWithColor(`Promise resolved: ${result}`, colors.FgGreen);
+        })
+        .catch((error) => {
+          printWithColor(`Promise rejected: ${error}`, colors.FgRed);
+        });
+    } else if (type === "object") {
+      printObject(arg);
+    } else {
+      printWithColor(arg, colors.FgGreen);
     }
   });
 };

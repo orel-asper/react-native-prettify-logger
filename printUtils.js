@@ -1,47 +1,88 @@
-// printUtils.js
+const colors = {
+    Reset: "\x1b[0m",
+    FgRed: "\x1b[31m",
+    FgGreen: "\x1b[32m",
+    FgYellow: "\x1b[33m",
+    FgBlue: "\x1b[34m",
+    FgMagenta: "\x1b[35m",
+    FgOrange: "\x1b[33m"
+};
 
-import { colors, emojis } from './constants.js';
-import { getType } from './typeUtils.js';
+// Add emojis
+const emojis = {
+    string: '📄',
+    boolean: '✅',
+    number: '🔢',
+    object: '📦',
+    array: '📚',
+    error: '❌',
+    undefined: '❓',
+    null: '🈳',
+    function: '🔧',
+    promise: '🤝',
+};
 
-export function printWithColor(value, color) {
+const getType = (value) => {
+    if (value === null) return 'null';
+    if (value instanceof Promise) return 'promise';
+    if (Array.isArray(value)) return 'array';
+    if (value instanceof Error) return 'error';
+    return typeof value;
+};
+
+export const printWithColor = (value, color) => {
     const type = getType(value);
-    const emoji = emojis.get(type) || '';
-    console.log(emoji, color, value, colors.get('Reset'));
-}
+    const emoji = emojis[type] || '';
+    console.log(emoji, color, value, colors.Reset);
+};
 
-export function printPromise(promise) {
-    promise
-        .then(result => printWithColor(`Promise resolved: ${result}`, colors.get('FgGreen')))
-        .catch(error => printWithColor(`Promise rejected: ${error}`, colors.get('FgRed')));
-}
-
-export function printObject(object, indent = '') {
-    if (!object) {
-        printWithColor(`${indent}null`, colors.get('FgRed'));
+export const printObject = (object, indent = '') => {
+    if (object === null || object === undefined) {
+        printWithColor(indent + 'null', colors.FgRed);
         return;
     }
 
     if (object instanceof Error) {
-        printWithColor(`Error: ${object.message}`, colors.get('FgRed'));
+        printWithColor(`Error: ${object.message}`, colors.FgRed);
         return;
     }
 
     if (object instanceof Promise) {
-        printPromise(object);
+        object
+            .then((result) => {
+                printWithColor(`Promise resolved: ${result}`, colors.FgGreen);
+            })
+            .catch((error) => {
+                printWithColor(`Promise rejected: ${error}`, colors.FgRed);
+            });
         return;
     }
 
-    console.log(colors.get('FgMagenta'), `${indent}{`);
+    console.log(colors.FgMagenta, indent + "{");
     Object.entries(object).forEach(([key, value]) => {
-        if (typeof value === 'object') {
-            console.log(`${indent}  "${colors.get('FgBlue')}${key}${colors.get('Reset')}": `);
-            printObject(value, `${indent}  `);
-        } else {
-            printWithColor(
-                `${indent}  "${colors.get('FgBlue')}${key}${colors.get('Reset')}": ${value}`,
-                colors.get('FgGreen')
-            );
+        let formattedValue;
+        let valueColor = colors.Reset;
+        switch (typeof value) {
+            case "string":
+                formattedValue = `"${value}"`;
+                valueColor = colors.FgYellow;
+                break;
+            case "boolean":
+                formattedValue = value;
+                valueColor = value ? colors.FgGreen : colors.FgOrange;
+                break;
+            case "undefined":
+                formattedValue = 'undefined';
+                valueColor = colors.FgRed;
+                break;
+            case "object":
+                console.log(indent + `  "${colors.FgBlue}${key}${colors.Reset}": `);
+                printObject(value, indent + '  ');
+                return;
+            default:
+                formattedValue = value;
         }
+        printWithColor(indent + `  "${colors.FgBlue}${key}${colors.Reset}": ${valueColor}${formattedValue}`, colors.Reset);
     });
-    console.log(colors.get('FgMagenta'), `${indent}}`);
-}
+    console.log(colors.FgMagenta, indent + "}");
+};

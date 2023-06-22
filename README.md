@@ -61,6 +61,38 @@ You can log actions performed on the local storage by calling `logLocalStorage()
 global.logLocalStorage();
 ```
 
+- `global.logLocalStorage = logLocalStorage;`
+
+  This line assigns the `logLocalStorage` function to the global object, allowing it to be called from anywhere in your application. The `logLocalStorage` function logs the current state of the local storage, which is useful for debugging issues related to data stored in the local storage.
+
+  Example usage:
+  ```javascript
+  // Log the current state of the local storage
+  global.logLocalStorage();
+  ```
+
+- `global.fetch = fetchWithLogging;`
+
+  This line replaces the global `fetch` function with `fetchWithLogging`. The `fetchWithLogging` function is a wrapper around the standard `fetch` function that logs the request and response details to the console, in addition to performing the usual fetch functionality. This is particularly useful for tracking API calls and their responses during development and debugging.
+
+  Example usage:
+  ```javascript
+  // Make an API call with fetch and log the request and response details
+  global.fetch('https://api.example.com/data');
+  ```
+
+- `global.axios = axiosInstance;`
+
+  This line assigns an Axios instance configured with request and response logging to the global object, replacing the standard `axios` library. This allows you to make HTTP requests with Axios and have the request and response details logged to the console. Just like `fetchWithLogging`, this is very useful for tracking API calls and their responses during development and debugging.
+
+  Example usage:
+  ```javascript
+  // Make an API call with axios and log the request and response details
+  global.axios.get('https://api.example.com/data');
+  ```
+
+Please note that to use these functionalities, you need to first start request logging by calling `global.startLoggingRequests()`. You can stop logging at any time by calling `global.stopLoggingRequests()`. If you want to log only certain requests, you can use `global.logRequestsWithFilter(filterFunc)`.
+
 ### Example 
 ```javascript
 //dummy data to check the logger

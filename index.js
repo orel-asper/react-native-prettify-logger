@@ -3,6 +3,7 @@ import { printWithColor, printPromise, printObject } from "./printUtils";
 import fetchWithLogging from "./fetchUtils";
 import logLocalStorage from "./localStorageUtils";
 import axiosInstance from "./axiosUtils";
+import { getType } from "./typeUtils";
 
 let isLoggingEnabled = false;
 let requestFilter = null;

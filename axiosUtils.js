@@ -2,6 +2,9 @@ import axios from 'axios';
 import { colors } from "./constants";
 import { printWithColor, printObject } from "./printUtils";
 
+const isLoggingEnabled = true; // Update the value based on your requirement
+const requestFilter = null; // Update the filter function if needed
+
 // Create an instance of axios
 const axiosInstance = axios.create();
 
@@ -9,16 +12,15 @@ const axiosInstance = axios.create();
 axiosInstance.interceptors.request.use((config) => {
     if (isLoggingEnabled && (!requestFilter || requestFilter(config.url))) {
         // Log the request
-        printWithColor('---- HTTP Request ----', colors.get('FgYellow'));
-        printWithColor(`URL: ${config.url}`, colors.get('FgBlue'));
-        printWithColor(`Method: ${config.method.toUpperCase()}`, colors.get('FgBlue'));
+        printWithColor('---- HTTP Request ----', colors.FgYellow);
+        printWithColor(`URL: ${config.url}`, colors.FgBlue);
+        printWithColor(`Method: ${config.method.toUpperCase()}`, colors.FgBlue);
         if (config.data) {
-            printWithColor('Request Data:', colors.get('FgBlue'));
+            printWithColor('Request Data:', colors.FgBlue);
             printObject(config.data);
         }
     }
 
-    // Always return the config otherwise the request will be blocked
     return config;
 });
 
@@ -26,26 +28,24 @@ axiosInstance.interceptors.request.use((config) => {
 axiosInstance.interceptors.response.use((response) => {
     if (isLoggingEnabled && (!requestFilter || requestFilter(response.config.url))) {
         // Log the response
-        printWithColor('---- HTTP Response ----', colors.get('FgYellow'));
-        printWithColor(`Status: ${response.status}`, colors.get('FgGreen'));
-        printWithColor(`Status Text: ${response.statusText}`, colors.get('FgGreen'));
-        printWithColor('Response:', colors.get('FgGreen'));
+        printWithColor('---- HTTP Response ----', colors.FgYellow);
+        printWithColor(`Status: ${response.status}`, colors.FgGreen);
+        printWithColor(`Status Text: ${response.statusText}`, colors.FgGreen);
+        printWithColor('Response:', colors.FgGreen);
         printObject(response.data);
     }
 
-    // Always return the response otherwise the promise will be blocked
     return response;
 }, (error) => {
-    // You can also handle and log errors here if you want
     if (isLoggingEnabled) {
-        printWithColor('---- HTTP Error ----', colors.get('FgRed'));
+        // Log the error
+        printWithColor('---- HTTP Error ----', colors.FgRed);
         printObject(error);
     }
 
-    // Always reject the promise otherwise the error will be swallowed
     return Promise.reject(error);
 });
 
-global.axios = axiosInstance;
+const enhancedAxios = axiosInstance;
 
-export default axiosInstance;
+export default enhancedAxios;

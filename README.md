@@ -1,6 +1,3 @@
-
----
-
 # 📚 Global Logger for React Native
 
 ---

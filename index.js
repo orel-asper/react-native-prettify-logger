@@ -4,9 +4,6 @@ import fetchWithLogging from "./fetchUtils";
 import logLocalStorage from "./localStorageUtils";
 import axiosInstance from "./axiosUtils";
 
-let isLoggingEnabled = false;
-let requestFilter = null;
-
 const logger = (...args) => {
   args.forEach(arg => {
     const type = typeof arg;
@@ -30,31 +27,10 @@ const logger = (...args) => {
   });
 };
 
-const startLoggingRequests = () => {
-  isLoggingEnabled = true;
-  requestFilter = null;
-  console.log(colors.get('FgGreen'), "Request logging enabled");
-};
-
-const stopLoggingRequests = () => {
-  isLoggingEnabled = false;
-  requestFilter = null;
-  console.log(colors.get('FgRed'), "Request logging disabled");
-};
-
-const logRequestsWithFilter = (filterFunc) => {
-  isLoggingEnabled = true;
-  requestFilter = filterFunc;
-  console.log(colors.get('FgGreen'), "Request logging enabled with filter");
-};
-
 global.logger = logger;
 global.fetch = fetchWithLogging;
 global.axios = axiosInstance;
-global.startLoggingRequests = startLoggingRequests;
-global.stopLoggingRequests = stopLoggingRequests;
-global.logRequestsWithFilter = logRequestsWithFilter;
 global.logLocalStorage = logLocalStorage;
 
 export default logger;
-export { startLoggingRequests, stopLoggingRequests, logRequestsWithFilter, logLocalStorage, fetchWithLogging, axiosInstance };
+export { logLocalStorage, fetchWithLogging, axiosInstance };

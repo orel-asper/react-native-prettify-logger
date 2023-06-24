@@ -1,25 +1,27 @@
 declare module 'react-native-prettify-logger' {
-    function logger(...args: any[]): void;
-
-    // function startLoggingRequests(): void;
-
-    // function stopLoggingRequests(): void;
-
-    function logRequestsWithFilter(filterFunc: (url: string, options: RequestInit) => boolean): void;
+    function logger(...args: any[]): Promise<void>;
 
     function logLocalStorage(): void;
 
-    // function fetchWithLogging(input: RequestInfo, init?: RequestInit): Promise<Response>;
+    const fetchWithLogging: {
+        get: (url: string) => Promise<any>;
+        post: (url: string, data: any) => Promise<any>;
+        put: (url: string, data: any) => Promise<any>;
+        delete: (url: string) => Promise<any>;
+    };
 
-    const axiosInstance: any;
+    const axiosInstance: {
+        get: (url: string) => Promise<any>;
+        post: (url: string, data: any) => Promise<any>;
+        put: (url: string, data: any) => Promise<any>;
+        delete: (url: string) => Promise<any>;
+    };
 
-    export = {
+    export {
         logger,
-        // startLoggingRequests,
-        // stopLoggingRequests,
-        logRequestsWithFilter,
         logLocalStorage,
-        // fetchWithLogging,
+        fetchWithLogging,
         axiosInstance
-    }
+    };
 }
+

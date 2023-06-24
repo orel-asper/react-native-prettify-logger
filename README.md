@@ -19,12 +19,9 @@ To use this library in your React Native project, just copy the logger code into
 Then, assign the logger function and additional features to the global object:
 
 ```javascript
-import logger, { startLoggingRequests, stopLoggingRequests, logRequestsWithFilter, logLocalStorage, fetchWithLogging, axiosInstance } from 'react-native-prettify-logger';
+import logger, {  logLocalStorage, fetchWithLogging, axiosInstance } from 'react-native-prettify-logger';
 
 global.logger = logger;
-global.startLoggingRequests = startLoggingRequests;
-global.stopLoggingRequests = stopLoggingRequests;
-global.logRequestsWithFilter = logRequestsWithFilter;
 global.logLocalStorage = logLocalStorage;
 global.fetch = fetchWithLogging;
 global.axios = axiosInstance;
@@ -40,18 +37,25 @@ global.logger('Hello, world!', 123, { key: 'value' }, new Error('An error occurr
 
 ### Logging HTTP Requests and Responses
 
-You can enable logging of all HTTP requests and responses made with Fetch or Axios in your application by calling `startLoggingRequests()`. To stop logging, call `stopLoggingRequests()`. If you want to log only certain requests, you can pass a filter function to `logRequestsWithFilter(filterFunc)`, where `filterFunc` is a function that takes a URL and returns `true` if the request should be logged, and `false` otherwise.
+- `global.fetch = fetchWithLogging;`
 
-```javascript
-// Log all requests
-global.startLoggingRequests();
+  This line replaces the global `fetch` function with `fetchWithLogging`. The `fetchWithLogging` function is a wrapper around the standard `fetch` function that logs the request and response details to the console, in addition to performing the usual fetch functionality. This is particularly useful for tracking API calls and their responses during development and debugging.
 
-// Log only requests to 'api.example.com'
-global.logRequestsWithFilter(url => url.includes('api.example.com'));
+  Example usage:
+  ```javascript
+  // Make an API call with fetch and log the request and response details
+  global.fetch.get('https://api.example.com/data');
+  ```
 
-// Stop logging requests
-global.stopLoggingRequests();
-```
+- `global.axios = axiosInstance;`
+
+  This line assigns an Axios instance configured with request and response logging to the global object, replacing the standard `axios` library. This allows you to make HTTP requests with Axios and have the request and response details logged to the console. Just like `fetchWithLogging`, this is very useful for tracking API calls and their responses during development and debugging.
+
+  Example usage:
+  ```javascript
+  // Make an API call with axios and log the request and response details
+  global.axios.get('https://api.example.com/data');
+  ```
 
 ### Logging Local Storage Actions
 
@@ -70,28 +74,6 @@ global.logLocalStorage();
   // Log the current state of the local storage
   global.logLocalStorage();
   ```
-
-- `global.fetch = fetchWithLogging;`
-
-  This line replaces the global `fetch` function with `fetchWithLogging`. The `fetchWithLogging` function is a wrapper around the standard `fetch` function that logs the request and response details to the console, in addition to performing the usual fetch functionality. This is particularly useful for tracking API calls and their responses during development and debugging.
-
-  Example usage:
-  ```javascript
-  // Make an API call with fetch and log the request and response details
-  global.fetch('https://api.example.com/data');
-  ```
-
-- `global.axios = axiosInstance;`
-
-  This line assigns an Axios instance configured with request and response logging to the global object, replacing the standard `axios` library. This allows you to make HTTP requests with Axios and have the request and response details logged to the console. Just like `fetchWithLogging`, this is very useful for tracking API calls and their responses during development and debugging.
-
-  Example usage:
-  ```javascript
-  // Make an API call with axios and log the request and response details
-  global.axios.get('https://api.example.com/data');
-  ```
-
-Please note that to use these functionalities, you need to first start request logging by calling `global.startLoggingRequests()`. You can stop logging at any time by calling `global.stopLoggingRequests()`. If you want to log only certain requests, you can use `global.logRequestsWithFilter(filterFunc)`.
 
 ### Example 
 ```javascript
@@ -169,5 +151,3 @@ We welcome contributions to improve this library. Please open an issue or submit
 Thank you to all contributors and users of this library.
 
 ---
-
-Remember to replace "MIT License" with the actual license your project is under, and add any other sections you feel are necessary. This is just a template and should be customized to your needs.

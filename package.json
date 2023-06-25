@@ -1,6 +1,6 @@
 {
   "name": "react-native-prettify-logger",
-  "version": "1.0.18",
+  "version": "1.0.20",
   "description": "A simple logger for React Native.",
   "main": "index.js",
   "types": "index.d.ts",
